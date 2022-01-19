@@ -23,9 +23,41 @@ namespace Travel.Controllers
 
     // GET api/destination
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Destination>>> Get()
+    public async Task<ActionResult<IEnumerable<Destination>>> Get(string state, string city, int rating, string sortBy, string mostReview, string dsc ) 
     {
-      return await _db.Destinations.ToListAsync();
+      var query = _db.Destinations.AsQueryable();
+      
+      if (state != null)
+      {
+        query = query.Where(entry => entry.Country == state);
+      }
+
+      if ( city != null)
+      {
+        query = query.Where(entry => entry.City == city);
+      }
+
+      if (rating != 0 )
+      {
+        query = query.Where(entry => entry.Rating == rating);
+      }
+      
+      if (sortBy != null)
+      {
+        if ( sortBy == "rating")
+        {
+        query = query.OrderByDescending(entry => entry.Rating);
+        }
+        if (sortBy == "city")
+        {
+          query = query.OrderByDescending(entry => entry.City);
+        }
+        if (sortBy == "state")
+        {
+          query = query.OrderByDescending(entry => entry.State);
+        }  
+      }
+      return await query.ToListAsync();
     }
 
     [HttpGet("{id}")]
