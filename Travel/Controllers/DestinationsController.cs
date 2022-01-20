@@ -23,7 +23,7 @@ namespace Travel.Controllers
 
     // GET api/destination
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Destination>>> Get(string state, string city, int rating, string sortBy, string mostReview, string dsc ) 
+    public async Task<ActionResult<IEnumerable<Destination>>> Get(string state, string city, int rating, string sortBy) 
     {
       var query = _db.Destinations.AsQueryable();
       
